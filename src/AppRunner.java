@@ -41,7 +41,6 @@ public class AppRunner {
         UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
         allowProducts.addAll(getAllowedProducts().toArray());
         chooseAction(allowProducts);
-
     }
 
     private UniversalArray<Product> getAllowedProducts() {
@@ -56,25 +55,26 @@ public class AppRunner {
 
     private void chooseAction(UniversalArray<Product> products) {
         showActions(products);
-        print(" h - Выйти");
+        print("h - Выйти");
         String action = fromConsole().substring(0, 1);
+
+        if ("h".equalsIgnoreCase(action)) {
+            isExit = true;
+            return;
+        }
+
         try {
             for (int i = 0; i < products.size(); i++) {
                 if (products.get(i).getActionLetter().equals(ActionLetter.valueOf(action.toUpperCase()))) {
                     coinAcceptor.setAmount(coinAcceptor.getAmount() - products.get(i).getPrice());
                     print("Вы купили " + products.get(i).getName());
                     break;
-                } else if ("h".equalsIgnoreCase(action)) {
-                    isExit = true;
-                    break;
                 }
             }
         } catch (IllegalArgumentException e) {
-            print("Недопустимая буква. Попрбуйте еще раз.");
+            print("Недопустимая буква. Попробуйте еще раз.");
             chooseAction(products);
         }
-
-
     }
 
     private void showActions(UniversalArray<Product> products) {
